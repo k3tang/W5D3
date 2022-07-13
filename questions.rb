@@ -109,6 +109,11 @@ class Question
         return user_instance.fname + " " + user_instance.lname
     end 
 
+    def replies(question_id)                                 # return all instances of replies for this Q_id 
+      Reply.find_by_question_id(question_id)
+    end
+
+
 end
 
 
@@ -133,7 +138,7 @@ class Reply
         SQL
         return nil if user_id.length == 0
 
-        Reply.new(user_id.first) #this is a hash 
+        Reply.new(user_id.first) #this is an instance
 
     end
 
