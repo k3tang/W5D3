@@ -11,7 +11,7 @@ class QConnection < SQLite3::Database
         end 
             
 end
-
+# ----------------------------------------------------------------------------------
 class User
 
     attr_accessor :id, :fname, :lname
@@ -64,7 +64,7 @@ class User
 
 end 
 
-
+# -----------------------------------------------------------------------------------------------
 class Question
     attr_accessor :user_id , :id, :body, :title
 
@@ -104,9 +104,9 @@ class Question
                         title = ? AND body = ?)
             SQL
         return nil if author.length == 0
-        
-        user_instance = User.new(author.first)
-        return user_instance.fname + " " + user_instance.lname
+        User.new(author.first)
+        # user_instance = User.new(author.first)
+        # return user_instance.fname + " " + user_instance.lname
     end 
 
     def replies(question_id)                                 # return all instances of replies for this Q_id 
@@ -116,7 +116,7 @@ class Question
 
 end
 
-
+# -------------------------------------------------------------------------
 class Reply
 
     attr_accessor :id, :user_id, :question_id, :body_reply
@@ -155,5 +155,30 @@ class Reply
 
     Reply.new(question_id.first) #this is a hash 
  end
- 
+  def author
+        author = QConnection.instance.execute(<<-SQL, self.user_id)
+        SELECT
+         fname, lname
+        FROM 
+            users 
+        WHERE 
+            users.id = (
+                SELECT
+                replies.user_id
+                FROM 
+                    replies
+                WHERE
+                    user_id = ? )
+        SQL
+        return nil if author.length == 0
+        User.new(author.first)
+
+  end
+  def question
+  end
+  def parent_reply
+  end
+  def child_replies
+  end 
 end
+# -------------------------------------------------------------------------
