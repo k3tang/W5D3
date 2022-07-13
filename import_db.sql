@@ -69,3 +69,9 @@ INSERT INTO
  ('pets','what is your favorite pet', (SELECT id FROM users WHERE fname = 'karen'));
 
 
+INSERT INTO 
+ replies (question_id,user_id,body_reply)
+ VALUES
+ ((SELECT id FROM questions WHERE id = user_id),(SELECT id FROM users WHERE fname = 'mohamed'),'32'),
+ ((SELECT id FROM questions WHERE id = user_id),(SELECT id FROM users WHERE fname = 'karen'),'dog');
+
